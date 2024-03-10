@@ -6,10 +6,29 @@ dCalendario = ADDCOLUMNS(CALENDAR(
     DATE(YEAR(MIN('Tabela'[Data])),01,01),
    DATE(YEAR(MAX('Tabela'[Data])),12,31)),
 
-   "ANO", YEAR([Date]),
+   "ANO", YEAR([Data]),
    "MÊS", FORMAT([Date],"mm"),
-   "ANO - MÊS", FORMAT([Date], "yyyy" & " - " &FORMAT([Date],"mm")),
-   "MÊS COMPLETO",FORMAT([Date],"mmmm"),
-   "MÊS E ANO ABREV ",FORMAT([Date],"mmm" & " "&FORMAT([Date],"yy")
+   "ANO - MÊS", FORMAT([Data], "yyyy" & " - " &FORMAT([Date],"mm")),
+   "MÊS COMPLETO",FORMAT([Data],"mmmm"),
+   "MÊS E ANO ABREV ",FORMAT([Data],"mmm" & " "&FORMAT([Date],"yy")
 
    ))
+
+## Concatena Medida
+
+Valor Uber + Percentual = 
+VAR vUber = 'Medidas'[Total gasto com Uber]
+VAR vUber_Percent = FORMAT('Medidas'[% Gasto com Uber por Mês], "00.0%")
+VAR vUber_ajustado = 
+SWITCH( 
+    TRUE(),
+    VuBER >= 1000000000, FORMAT(vUber, "R$ #,0,,,.00 Bi"),
+    VuBER >= 1000000, FORMAT(vUber, "R$ #,0,,.00 Mi"),
+    VuBER >= 1000, FORMAT(vUber, "R$ #,0.00"),
+    FORMAT(vUber, "R$ #.00"))
+RETURN
+IF (
+    AND(vUber_ajustado <> "", vUber_ajustado <> "R$ .00"),
+    vUber_Percent  & " | " & vUber_ajustado,
+    BLANK()
+)
