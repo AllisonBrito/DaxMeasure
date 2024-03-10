@@ -1,0 +1,15 @@
+# Medidas Dax
+
+## Tabela Calendário 
+
+dCalendario = ADDCOLUMNS(CALENDAR(
+    DATE(YEAR(MIN('Tabela'[Data])),01,01),
+   DATE(YEAR(MAX('Tabela'[Data])),12,31)),
+
+   "ANO", YEAR([Date]),
+   "MÊS", FORMAT([Date],"mm"),
+   "ANO - MÊS", FORMAT([Date], "yyyy" & " - " &FORMAT([Date],"mm")),
+   "MÊS COMPLETO",FORMAT([Date],"mmmm"),
+   "MÊS E ANO ABREV ",FORMAT([Date],"mmm" & " "&FORMAT([Date],"yy")
+
+   ))
